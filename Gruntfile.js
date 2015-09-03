@@ -26,7 +26,7 @@ module.exports = function (grunt){
             build: {
                 files: [
                     {
-                        src: [ 'assets/scripts/*', '*.html'],
+                        src: [ 'assets/scripts/*','assets/font/*','assets/stylesheets/*.css', 'assets/images/*','assets/audio/*', 'assets/images/**/*','*.html'],
                         dest: 'dist/',
                         expand: true
                     }
@@ -57,8 +57,8 @@ module.exports = function (grunt){
         // concat js
         concat: {
             build: {
-                src:'assets/scripts/index.js',
-                dest:'dist/assets/scripts/index.js'
+                src:'assets/scripts/placeholder.js',
+                dest:'dist/assets/scripts/placeholder.js'
             }
         },
 
@@ -83,7 +83,7 @@ module.exports = function (grunt){
                         return '<link rel="stylesheet" href="' + filePath + '" />';
                     },
                     starttag: '<!-- injector:css -->',
-                    endtag: '<!-- endinjector -->',
+                    endtag: '<!-- endinjector -->'
                 },
                 files: {
                     'dist/index.html': ['dist/assets/stylesheets/*.css']
@@ -105,6 +105,39 @@ module.exports = function (grunt){
             }
         },
 
+        'string-replace': {
+            deploy: {
+                files: [{
+                    expand: true,
+                    cwd: 'dist/',
+                    src: '*.html',
+                    dest: 'dist/'
+                }],
+                options: {
+                    replacements: [{
+                        //  remove livereload
+                        pattern: /<script src="\/\/localhost:35729\/livereload.js"><\/script>/ig,
+                        replacement: ''
+                    },
+                        {
+                            //  remove less compiler
+                            pattern: /<script src="assets\/scripts\/less.min.js"><\/script>/ig,
+                            replacement: ''
+                        },
+                        {
+                            //  replace link tag's rel="stylesheet/less" to rel="stylesheet"
+                            pattern: /stylesheet\/less/ig,
+                            replacement: 'stylesheet'
+                        },
+                        {
+                            //  replace .less extension to .css extension
+                             pattern: /.less"\/>/ig,
+                            replacement: '.css"/>'
+                        }]
+                }
+            }
+        },
+
         watch: {
             css: {
                 files: 'assets/stylesheets/**',
@@ -113,7 +146,7 @@ module.exports = function (grunt){
                 }
             },
             js: {
-                files: 'assets/script/**',
+                files: 'assets/scripts/**',
                 options: {
                     livereload: true
                 }
@@ -134,9 +167,10 @@ module.exports = function (grunt){
     grunt.registerTask('concatCompressorCss', ['cssmin:build']); //ok
     grunt.registerTask('makeJs', ['concat:build', 'uglify:build']); //ok
     grunt.registerTask('injectFileToHtml', ['injector']); //ok
+    grunt.registerTask('removeUnuseFile', ['string-replace:deploy']); //ok
     // main task
     //grunt.registerTask('deploy', ['cleanDir', 'copyFileToDist', 'compileLess', 'concatCompressorCss', 'makeJs', 'injectFileToHtml']);
-    grunt.registerTask('deploy', ['cleanDir', 'copyFileToDist', 'compileLess', 'injectFileToHtml']);
+    grunt.registerTask('deploy', ['cleanDir', 'copyFileToDist', 'compileLess', 'removeUnuseFile']);
     grunt.registerTask('live', ['watch']);
 
 
