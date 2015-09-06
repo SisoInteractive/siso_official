@@ -1,0 +1,141 @@
+/*======================================================================
+      news
+  ======================================================================*/
+.m-news {
+  position: absolute;
+  background: #efefef;
+  width: 100%;
+  height: 100%;
+  border: 20px solid #efefef;
+  border-bottom: none;
+  border-right: none;
+  top: 0;
+}
+.m-news .mCSB_inside > .mCSB_container {
+  margin-right: 20px;
+}
+.m-news .mCSB_dragger_bar {
+  width: 20px!important;
+  margin: 0 0px !important;
+  border-radius: 0!important;
+  background: #ffbf00!important;
+}
+.m-news .mCSB_scrollTools {
+  width: 20px;
+}
+.m-news .mCSB_draggerRail {
+  background: #f0f0f0 !important;
+}
+.m-news .mCSB_scrollTools .mCSB_draggerRail {
+  border-radius: 0!important;
+}
+.m-news .mCustomScrollBox {
+  width: 100%;
+  height: 100%;
+}
+.m-news .mCS-inset.mCSB_scrollTools .mCSB_draggerRail {
+  width: 20px !important;
+}
+.m-news .m-company-body {
+  position: relative;
+  background: #fff;
+  width: 100%;
+  height: 100%;
+}
+.m-news .logo {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  display: block;
+}
+.m-news .myVideo {
+  bottom: 0;
+  top: 0;
+  right: 0;
+  width: 100%;
+  background-size: 100% 100%;
+  background-size: contain;
+  object-fit: cover;
+  /*cover video background */
+  z-index: 3;
+  display: block;
+  border: none;
+}
+.m-news-body {
+  position: absolute;
+  top: 0;
+  background: #fff;
+  left: 50%;
+  height: 100%;
+  opacity: .95;
+}
+.m-news-body h2 {
+  font-size: 10px;
+  color: #ccc;
+}
+.m-news-body .bd {
+  padding: 80px 0 0 80px;
+}
+.m-news-body .item-box {
+  width: 90%;
+}
+.m-news-body .item-box .content-dd {
+  display: none;
+}
+.m-news-body .item-box .content-dd img {
+  padding: 10px 0;
+  width: 100%;
+}
+.m-news-body .item-box .content-dd p {
+  line-height: 26px;
+  font-size: 18px;
+  color: #999;
+  padding-bottom: 40px;
+}
+.m-news-body dl {
+  padding-top: 40px;
+  padding-bottom: 40px;
+}
+.m-news-body dt {
+  color: #999;
+}
+.m-news-body dd {
+  padding-top: 20px;
+  color: #333;
+  font-size: 36px;
+}
+.icon {
+  height: 20px;
+  width: 20px;
+  display: block;
+  position: absolute;
+  right: 0px;
+  top: 90px;
+  -webkit-transition: all .8s;
+  -webkit-transform: rotate(0deg);
+}
+.icon.active {
+  -webkit-transform: rotate(180deg);
+}
+.icon.active:after {
+  opacity: 0;
+  -webkit-transition: all .8s;
+}
+.icon-add:before,
+.icon-add:after {
+  content: '';
+  height: 4px;
+  width: 22px;
+  display: block;
+  background: #999;
+  position: absolute;
+  top: 9px;
+  left: 0px;
+}
+.icon-add:after {
+  height: 22px;
+  width: 4px;
+  top: 0;
+  left: 9px;
+  opacity: 1;
+}

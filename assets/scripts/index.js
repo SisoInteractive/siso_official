@@ -77,10 +77,12 @@ var index = {
             }
         });
 
+        /* state Module */
         index.operate_dom();
         index.case_detail();
         index.article_list();
         index.company();
+        index.news();
         pageInit();
     },
 
@@ -234,8 +236,8 @@ var index = {
         function getTransform(Class){
                 var wrapper = $(Class);
                 var transformVal = wrapper.css('-webkit-transform');
-                var numReg = /-?[0-9]+/g;//可能有负数所以就加个负号
-                var valAry = transformVal.match(numReg);//返回一个包含有数字值的数组
+                var numReg = /-?[0-9]+/g;
+                var valAry = transformVal.match(numReg);//返回数字值的数组
                 var transformXVal = valAry[valAry.length - 2],transformYVal = valAry[valAry.length - 1];//返回transformX、transformY的值
                 return transformXVal;
         }
@@ -355,6 +357,41 @@ var index = {
                 timeout:0
             })
         });
+
+
+    },
+    news:function(){
+        var news_body = $('.m-news-body');
+        news_body.mCustomScrollbar({
+            autoHideScrollbar:false,
+            theme:"inset",
+            scrollEasing:"easeOut",
+            scrollInertia:800,
+            contentTouchScroll:30
+        });
+
+        var item_box_bd = $('.item-box .hd');
+        item_box_bd.hammer().bind('tap',function(){
+            $(this).siblings(".content-dd").slideToggle();
+            var icon = $(this).siblings('.icon-add');
+            icon.toggleClass("active");
+            var dl = $(this).parent();
+            var dl_index = dl.index();
+            var goto_height = getItem_height(dl_index) + 110 + dl_index*80;
+            console.log(goto_height)
+            setTimeout(function(){
+                $('.m-news-body').mCustomScrollbar("scrollTo",goto_height)
+            },500)
+        })
+
+        function getItem_height(index){
+            var sum_height= 0;
+            $('.m-news-body .item-box dl:lt(' + index + ')').each(function(){
+                sum_height = sum_height + $(this).height();
+            })
+            return sum_height;
+        }
+
 
 
     }
