@@ -6,11 +6,7 @@ var index = {
     app: function(){
 
         function pageInit(){
-            //setTimeout(function(){
-            //    var container_list =$('.container-list');
-            //    $('.header').addClass('active');
-            //    container_list.addClass('active');
-            //},500)
+            index.start_drag_banner();
         }
 
         //parallax
@@ -83,6 +79,7 @@ var index = {
         index.article_list();
         index.company();
         index.news();
+        index.about();
         pageInit();
     },
 
@@ -90,26 +87,26 @@ var index = {
         index.window_width = $(window).width();  //get window width
         index.window_height = $(window).height(); //get window height
         // click toggle-btn
-        var header = $('.header');
+        index.header = $('.header');
         var m_mostRecent = $('.m-mostRecent');
         var container_list =$('.container-list');
         var m_case_detail = $('.m-case-detail')
         $('.toggle').hammer().bind("tap",function(){
-            header.addClass('active');
+            index.header.addClass('active');
             container_list.addClass('active');
         });
         //toggle-mostRecent
         $('.toggle-mostRecent').hammer().bind("tap",function(){
-            header.addClass('active');
+            index.header.addClass('active');
             m_mostRecent.addClass('active');
         });
         //mostRecent-nav
         $('.mostRecent-nav').hammer().bind("tap",function(){
-            header.removeClass('active');
+            index.header.removeClass('active');
             m_mostRecent.removeClass('active');
         });
         $('.container-list-btn').hammer().bind("tap",function(){
-            header.removeClass('active');
+            index.header.removeClass('active');
             container_list.removeClass('active');
         })
         $('.detail-wrapper-nav').hammer().bind("tap",function(){
@@ -146,8 +143,10 @@ var index = {
             mostRecent_item();
             index.window_width = $(window).width();
             index.window_height = $(window).height();
+            index.start_drag_banner();
         })
 
+        /*Control mostRecent-body --> li height*/
         function mostRecent_item(){
             var mostRecent_li = $(".item-box .item");
             mostRecent_li.each(function(item,self){
@@ -155,6 +154,7 @@ var index = {
                 $(self).css('height',mostRecent_li_width_value+"px");
             });
         }
+        mostRecent_item();
 
         /*
         *   toggle for detail-wrapper
@@ -242,11 +242,12 @@ var index = {
                 return transformXVal;
         }
         index.getTransForm = getTransform;
-        /*Control mostRecent-body --> li height*/
-        mostRecent_item();
+
+
 
     },
     case_detail:function(){
+
         $('.playVideo-btn').hammer().bind("tap",function(){
             var video = $(this).parent().children('.myVideo');
             video.get(0).play();
@@ -289,6 +290,29 @@ var index = {
                 slider.goToNextSlide();
             })
         });
+
+        //Drag banner img
+        //$('.Drag-banner-img').css('clip',"rect( 0 600px 433px 0 )");
+        function start_drag_banner(){
+            var img = $('.Drag-banner-img');
+            var banner_width = img.width();
+            var Drag_btn = $('.Drag-btn');
+            var rect_x = banner_width/2;
+            img.css('clip',"rect( 0 "+ rect_x +"px "+ img.height() +"px 0 )");
+            Drag_btn.css('left',''+ (rect_x - Drag_btn.width()/2+1 ) +'px');
+            $('.Drag-btn').hammer().bind('tap pan',function(eve){
+                console.log( eve.gesture.srcEvent.clientX )
+                var drag_X = eve.gesture.srcEvent.clientX;
+                if(drag_X > banner_width * 0.1 && drag_X < banner_width * 0.9 ){
+                    img.css('clip',"rect( 0 "+ ( drag_X ) +"px "+ img.height() +"px 0 )");
+                    Drag_btn.css('left',''+ ( drag_X - Drag_btn.width() / 2 )+'px');
+                }
+            })
+
+        }
+
+        index.start_drag_banner = start_drag_banner;
+
     },
     article_list:function(){
         // hammer().bind('panleft panright hover tap press pan swipe',function( ev ){
@@ -348,14 +372,13 @@ var index = {
                     this.mcs.top=200;
             }}
         });
-        $('.toggle-careers').hammer().bind('tap',function(){
+        $('.toggle-company').hammer().bind('tap',function(){
             $('.m-company').addClass('active');
-            $('.header').addClass('active');
+            index.header.addClass('active');
         });
         $('.m-company-nav').hammer().bind('tap',function(){
-            company.mCustomScrollbar("scrollTo",100,{
-                timeout:0
-            })
+            $('.m-company').removeClass('active');
+            index.header.removeClass('active');
         });
 
 
@@ -376,26 +399,87 @@ var index = {
             var icon = $(this).siblings('.icon-add');
             icon.toggleClass("active");
             var dl = $(this).parent();
+            var db = $(this).parents('.bd');
+            var db_top = parseInt(db.css('padding-top'));
+            var item_box = $(this).parents('.item-box');
             var dl_index = dl.index();
-            var goto_height = getItem_height(dl_index) + 110 + dl_index*80;
-            console.log(goto_height)
+            var calculate_height = 0;
+            db.children('.calculate-height').each(function(){
+                calculate_height = calculate_height + $(this).outerHeight(true);
+            })
+            var goto_height = getItem_height(item_box,dl_index) + db_top + calculate_height;
+
             setTimeout(function(){
                 $('.m-news-body').mCustomScrollbar("scrollTo",goto_height)
-            },500)
+            },410)
         })
 
-        function getItem_height(index){
+        function getItem_height(item_box,dl_index){
             var sum_height= 0;
-            $('.m-news-body .item-box dl:lt(' + index + ')').each(function(){
-                sum_height = sum_height + $(this).height();
+            item_box.children('dl:lt('+ dl_index +')').each(function(){
+
+                sum_height = sum_height + $(this).outerHeight(true);
+
             })
             return sum_height;
         }
 
 
+        $('.toggle-news').hammer().bind('tap',function(){
+            $('.m-news').addClass('active');
+            index.header.addClass('active');
+        });
+
+        $('.m-news-nav').hammer().bind('tap',function(){
+            $('.m-news').removeClass('active');
+            index.header.removeClass('active');
+        });
+
+        $('.toggle-careers').hammer().bind('tap',function(){
+            $('.m-careers').addClass('active');
+            index.header.addClass('active');
+        });
+        $('.m-careers-nav').hammer().bind('tap',function(){
+            $('.m-careers').removeClass('active');
+            index.header.removeClass('active');
+        });
+
+    },
+    about:function(){
+
+        if(index.window_width > 500){
+        // 百度地图API功能
+            var map = new BMap.Map("allmap");
+            var point = new BMap.Point(121.468548,31.247761);
+            map.centerAndZoom(point,16);
+            //创建地址解析器实例
+            var myGeo = new BMap.Geocoder();
+            //将地址解析结果显示在地图上,并调整地图视野
+            myGeo.getPoint("上海市闸北区光复路581号", function(point){
+                if (point) {
+                    map.centerAndZoom(point, 16);
+                    map.addOverlay(new BMap.Marker(point));
+                    var marker = new BMap.Marker(point);  // 创建标注
+                    map.addOverlay(marker);              // 将标注添加到地图中
+                    map.setMapStyle({style:'grayscale'});
+                    var label = new BMap.Label(" ",{offset:new BMap.Size(-20,-20)});
+                    marker.setLabel(label);
+                }else{
+                    alert("您选择地址没有解析到结果!");
+                }
+            }, "上海市闸北区光复路");
+        }
+
+        $('.toggle-about').hammer().bind('tap',function(){
+            $('.about').addClass('active');
+            index.header.addClass('active');
+        });
+        $('.about-nav').hammer().bind('tap',function(){
+            $('.about').removeClass('active');
+            index.header.removeClass('active');
+        });
 
     }
-
 
 };
 
