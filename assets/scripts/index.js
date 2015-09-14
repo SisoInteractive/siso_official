@@ -6,7 +6,10 @@ var index = {
     app: function(){
 
         function pageInit(){
-            index.start_drag_banner();
+            /* this is pc */
+            if( index.window_width>500 ){
+                index.start_drag_banner();
+            }
         }
 
         //parallax
@@ -127,7 +130,7 @@ var index = {
             var data_src = $(this).attr('data-source');
             var dom_path = "assets/images/";
             if(index.window_width < 500){
-                 dom_path = "assets/images/m-";
+                 dom_path = "assets/images/mobile/m-";
             }
             var img_path = dom_path+data_src;
             if(data_src){
@@ -301,7 +304,6 @@ var index = {
             img.css('clip',"rect( 0 "+ rect_x +"px "+ img.height() +"px 0 )");
             Drag_btn.css('left',''+ (rect_x - Drag_btn.width()/2+1 ) +'px');
             $('.Drag-btn').hammer().bind('tap pan',function(eve){
-                console.log( eve.gesture.srcEvent.clientX )
                 var drag_X = eve.gesture.srcEvent.clientX;
                 if(drag_X > banner_width * 0.1 && drag_X < banner_width * 0.9 ){
                     img.css('clip',"rect( 0 "+ ( drag_X ) +"px "+ img.height() +"px 0 )");
@@ -364,13 +366,8 @@ var index = {
             autoHideScrollbar:false,
             theme:"inset",
             scrollEasing:"easeOut",
-            scrollInertia:800,
+            scrollInertia:400,
             contentTouchScroll:30,
-            callbacks:{
-                whileScrolling:function(){
-                    console.log(this.mcs.top);
-                    this.mcs.top=200;
-            }}
         });
         $('.toggle-company').hammer().bind('tap',function(){
             $('.m-company').addClass('active');
@@ -389,7 +386,7 @@ var index = {
             autoHideScrollbar:false,
             theme:"inset",
             scrollEasing:"easeOut",
-            scrollInertia:800,
+            scrollInertia:400,
             contentTouchScroll:30
         });
 

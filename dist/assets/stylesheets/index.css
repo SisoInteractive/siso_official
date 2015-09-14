@@ -212,7 +212,7 @@
   width: 100%;
   top: 0;
   left: 0;
-  clip: rect(0px 0px 0px 0px);
+  clear: none;
   -o-user-select: none;
   -khtml-user-select: none;
   -webkit-user-select: none;
@@ -1067,6 +1067,9 @@
   .data-img {
     margin-top: -1% !important;
     margin-left: -1% !important;
+  }
+  .Drag-banner-box .Drag-btn {
+    display: none!important;
   }
   #fullpage .section {
     background: none!important;
