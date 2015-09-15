@@ -158,6 +158,7 @@
 .m-company-two-box ul .hd {
   font-size: 36px;
   color: #333;
+  font-family: CasperBold !important;
 }
 .m-company-two-box ul .bd {
   font-size: 24px;
@@ -193,6 +194,9 @@
   }
 }
 @media screen and (max-width: 500px) {
+  .myVideo-box {
+    display: none!important;
+  }
   .m-company-one-box {
     padding: 30px 30px 30px 30px;
     position: relative;

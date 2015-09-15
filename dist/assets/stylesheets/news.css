@@ -114,6 +114,7 @@
 }
 .m-news .m-news-body dt {
   color: #999;
+  font-family: CasperBold !important;
 }
 .m-news .m-news-body dd {
   padding-top: 20px;
